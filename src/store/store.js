@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import { AxiosHelper } from '../utils/axios_utils'
+// import { AxiosHelper } from '../utils/axios_utils'
 import API_ROUTE from '../.env'
 
 Vue.use(Vuex)
@@ -12,7 +12,8 @@ export const store = new Vuex.Store({
     single_food: {},
     users: [],
     user: '',
-    token: localStorage.getItem('token') || ''
+    token: localStorage.getItem('token') || '',
+    userError: ''
   },
 
   getters: {
@@ -25,6 +26,9 @@ export const store = new Vuex.Store({
   },
 
   mutations: {
+    register(state, err) {
+      state.userError = err
+    },
     getUsers(state, users) {
       state.users = users
     },
@@ -44,7 +48,7 @@ export const store = new Vuex.Store({
 
       // window.localStorage.setItem(this.defaultConfig.cookie_name, payload.token)
       state.token = payload.token
-      AxiosHelper.setHeader(payload.token)
+      // AxiosHelper.setHeader(payload.token)
       state.user = payload
     },
     getTickets(state, payload) {
@@ -52,14 +56,18 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
-    signUp(context, payload) {
-      axios.post(`${API_ROUTE}/users`, {
-        first_name: payload.first_name,
-        email: payload.email,
-        password: payload.password
-      }).then(res => {
-        console.log("this is the signup response: ", res.data)
-      })
+    async register(context, payload) {
+        try {
+        await axios.post(`${API_ROUTE}/users`, {
+          first_name: payload.first_name,
+          last_name: payload.last_name,
+          email: payload.email,
+          password: payload.password
+        })
+      }catch(err) {
+        context.commit('register', err.response.data)
+        console.log("the signup values: ", err.response.data)
+      }
     },
     getUsers(context) {
       axios.get(`${API_ROUTE}/users`).then(res => {

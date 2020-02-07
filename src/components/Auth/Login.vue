@@ -10,31 +10,25 @@
                 <div class="row">
                 </div>
                 <div class="row">
-                <div class="input-field col s12">
-                    <i class="material-icons prefix">mail_outline</i>
-                    <input class="validate" id="email" type="email">
-                    <label for="email" data-error="wrong" data-success="right">Email</label>
-                </div>
-                </div>
-                <div class="row">
-                <div class="input-field col s12">
-                    <i class="material-icons prefix">lock_outline</i>
-                    <input id="password" type="password">
-                    <label for="password">Password</label>
-                </div>
-                </div>
-                <div class="row">
-                <div class="input-field col s12">
-                    <a href="#" class="btn waves-effect waves-light col s12">Login</a>
-                </div>
-                </div>
-                <div class="row">
-                <div class="input-field col s6 m6 l6">
-                    <p class="margin left-margin medium-small"><a href="#">Register Now!</a></p>
-                </div>
-                <div class="input-field col s6 m6 l6">
-                    <p class="margin right-align medium-small"><a href="#">Forgot password?</a></p>
-                </div>          
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">mail_outline</i>
+                        <input class="validate" v-model="email">
+                        <label for="email" data-error="wrong" data-success="right">Email</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">lock_outline</i>
+                        <input type="password" v-model="password">
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <a href="#" class="btn waves-effect waves-light col s12">Login</a>
+                    </div>
+                    <div class="input-field col s6 m6 l6">
+                         <p class="margin left-margin medium-small"><a href="#">Register Now!</a></p>
+                    </div> 
+                    <div class="input-field col s6 m6 l6">
+                        <p class="margin right-align medium-small"><a href="#">Forgot password?</a></p>
+                    </div>                  
                 </div>
             </form>
             </div>
@@ -57,15 +51,19 @@ export default {
       inline: null,
       number: null,
       textarea: null,
-      autogrow: null,
-      disabled: null
+      email: null,
+      password: null
     })
 }
 </script>
 
 <style scoped>
     #login-page {
-        width: 40%;
+        width: 30%;
         margin: auto
-}
+    }
+    .input-field {
+        margin-top: 5px!important;
+        margin-bottom: 15px!important;
+    }
 </style>
