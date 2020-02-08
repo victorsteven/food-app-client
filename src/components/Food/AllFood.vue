@@ -99,21 +99,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-// .card-container {
-//  margin: 20px
-// }
-  // .card-expansion {
-  //   height: 480px;
-  // }
-
-  // .md-card {
-  //   width: 320px;
-  //   margin: 4px;
-  //   display: inline-block;
-  //   vertical-align: top;
-  // }
+<style scoped>
 
   .card-info, .card__meta a {
     color: #3299BB !important;
