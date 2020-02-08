@@ -2,7 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Register from './components/Auth/Register'
 import Login from './components/Auth/Login'
-import Index from './components/Index'
+// import Index from './components/Index'
+import AllFood from './components/Food/AllFood'
+
 // import axios from 'axios'
 
 import CreateFood from './components/Food/CreateFood'
@@ -11,12 +13,18 @@ import CreateFood from './components/Food/CreateFood'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
+  
   mode: 'history',
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'index',
+    //   component: Index
+    // },
     {
       path: '/',
-      name: 'index',
-      component: Index
+      name: 'all_food',
+      component: AllFood
     },
     {
       path: '/login',

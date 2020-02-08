@@ -20,8 +20,8 @@ export const store = new Vuex.Store({
     userDetails(state) {
       return state.user
     },
-    tickets(state) {
-      return state.tickets
+    allFood(state) {
+      return state.all_food;
     }
   },
 
@@ -40,6 +40,8 @@ export const store = new Vuex.Store({
     // },
     getAllFood(state, all_food) {
       state.all_food = all_food
+      // console.log("the food in state: ", state.all_food)
+
     },
     getSingleFood(state, food) {
       state.food = food
@@ -77,16 +79,15 @@ export const store = new Vuex.Store({
         console.log("the signup values: ", err.response.data)
       }
     },
-
-    getUsers(context) {
-      axios.get(`${API_ROUTE}/users`).then(res => {
-        context.commit('getUsers', res.data)
-        console.log("these are the users: ", res.data)
-      }).catch(err => {
+    async getAllFood(context) {
+      try {
+        const res = await axios.get(`${API_ROUTE}/food`)
+          context.commit('getAllFood', res.data)
+          console.log("these are the users: ", res.data)
+      } catch(err) {
         console.log("this is the error getting the user: ", err)
-      })
+      }
     },
-    
     createFood(context, payload) {
       axios.get(`${API_ROUTE}/food`, {
         title: payload.title,
