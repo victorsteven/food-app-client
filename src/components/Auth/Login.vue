@@ -6,22 +6,23 @@
                 <h4>Login</h4>
             </div>
             <div class="col s12 z-depth-6 card-panel">
-            <form class="login-form">
-                <div class="row">
-                </div>
+            <form class="login-form" @submit.prevent="login">
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">mail_outline</i>
-                        <input class="validate" v-model="email">
+                        <input class="validate" id="email" type="email" v-model="email">
                         <label for="email" data-error="wrong" data-success="right">Email</label>
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons prefix">lock_outline</i>
-                        <input type="password" v-model="password">
+                        <input type="password" id="password" v-model="password">
                         <label for="password">Password</label>
                     </div>
                     <div class="input-field col s12">
-                        <a href="#" class="btn waves-effect waves-light col s12">Login</a>
+                        <button :disabled="disabled" class="btn waves-effect waves-light col s12 btn-color">
+                            <span v-if="loading">Logging in...</span>
+                            <span v-else>Login</span> 
+                        </button>
                     </div>
                     <div class="input-field col s6 m6 l6">
                          <p class="margin left-margin medium-small"><a href="#">Register Now!</a></p>
@@ -45,15 +46,30 @@ import Layout from '../Nav/Layout'
 export default {
     components: {Layout},
     data: () => ({
-      initial: 'Initial Value',
-      type: null,
-      withLabel: null,
-      inline: null,
-      number: null,
-      textarea: null,
-      email: null,
-      password: null
-    })
+        email: null,
+        password: null,
+        loading: false
+    }),
+    computed: {
+        disabled(){
+            return this.loading === true
+        },
+        loginErr() {
+            return this.$store.state.userError
+        }
+    },
+    methods: {
+        login() {
+            this.loading = true
+            this.$store.dispatch('login', {
+                'email': this.email,
+                'password': this.password
+            }).then(() => {
+                this.loading = false
+                console.log("success")
+            })
+        }
+    }
 }
 </script>
 

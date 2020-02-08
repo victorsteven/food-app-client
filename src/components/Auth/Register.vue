@@ -14,25 +14,27 @@
                         <i class="material-icons prefix">contact_mail</i>
                         <input id="first_name" type="text" v-model="first_name">
                         <label for="first_name" data-error="wrong" data-success="right">First Name</label>
-                        <span style="color: red" v-if="signUpErr && signUpErr.fn_err">{{ signUpErr.fn_err }}</span>
+                        <span style="color: red" v-if="signUpErr && signUpErr.firstname_required">{{ signUpErr.firstname_required }}</span>
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons prefix">contact_mail</i>
                         <input id="last_name" type="text" v-model="last_name">
                         <label for="last_name" data-error="wrong" data-success="right">Last Name</label>
-                        <span style="color: red" v-if="signUpErr && signUpErr.ln_err">{{ signUpErr.ln_err }}</span>
+                        <span style="color: red" v-if="signUpErr && signUpErr.lastname_required">{{ signUpErr.lastname_required }}</span>
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons prefix">mail_outline</i>
                         <input id="email" class="validate" type="email" v-model="email">
                         <label for="email" data-error="wrong" data-success="right">Email</label>
-                        <span style="color: red" v-if="signUpErr && signUpErr.email_err">{{ signUpErr.email_err }}</span>
+                        <span style="color: red" v-if="signUpErr && signUpErr.email_required">{{ signUpErr.email_required }}</span>
+                        <span style="color: red" v-if="signUpErr && signUpErr.invalid_email">{{ signUpErr.invalid_email }}</span>
+                        <span style="color: red" v-if="signUpErr && signUpErr.email_taken">{{ signUpErr.email_taken }}</span>
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons prefix">lock_outline</i>
                         <input type="password" v-model="password">
                         <label for="password">Password</label>
-                        <span style="color: red" v-if="signUpErr && signUpErr.pass_err">{{ signUpErr.pass_err }}</span>
+                        <span style="color: red" v-if="signUpErr && signUpErr.password_required">{{ signUpErr.password_required }}</span>
                     </div>
                     <div class="input-field col s12">
                         <button :disabled="disabled" class="btn waves-effect waves-light col s12 btn-color">
@@ -78,12 +80,14 @@ export default {
     },
     methods: {
         register() {
+            this.loading = true
             this.$store.dispatch('register', {
                 'first_name': this.first_name,
                 'last_name': this.last_name,
                 'email': this.email,
                 'password': this.password
             }).then(() => {
+                this.loading = false
                 console.log("success")
             })
         }

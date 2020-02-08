@@ -11,7 +11,7 @@ export const store = new Vuex.Store({
     all_food: [],
     single_food: {},
     users: [],
-    user: '',
+    user: {},
     token: localStorage.getItem('token') || '',
     userError: ''
   },
@@ -26,9 +26,12 @@ export const store = new Vuex.Store({
   },
 
   mutations: {
-    register(state, err) {
+    userError(state, err) {
       state.userError = err
     },
+    // login(state, loginDetails) {
+    //   state.
+    // }
     getUsers(state, users) {
       state.users = users
     },
@@ -43,17 +46,22 @@ export const store = new Vuex.Store({
     },
 
     loggedInUser(state, payload) {
-      window.localStorage.setItem('user_info', JSON.stringify(payload))
-      window.localStorage.setItem('token', JSON.stringify(payload.token))
+      // window.localStorage.setItem('user_info', JSON.stringify(payload))
+      // window.localStorage.setItem('token', JSON.stringify(payload.token))
+      localStorage.setItem('access_token', payload.access_token)
+      localStorage.setItem('refresh_token', payload.refresh_token)
+      state.user = {
+        "id": payload.id,
+        "first_name": payload.first_name,
+        "last_name": payload.last_name,
+        "email": payload.email
+      }
 
       // window.localStorage.setItem(this.defaultConfig.cookie_name, payload.token)
-      state.token = payload.token
+      // state.token = payload.token
       // AxiosHelper.setHeader(payload.token)
-      state.user = payload
+      state.user = payload.user
     },
-    getTickets(state, payload) {
-      state.tickets = payload
-    }
   },
   actions: {
     async register(context, payload) {
@@ -65,10 +73,11 @@ export const store = new Vuex.Store({
           password: payload.password
         })
       }catch(err) {
-        context.commit('register', err.response.data)
+        context.commit('userError', err.response.data)
         console.log("the signup values: ", err.response.data)
       }
     },
+
     getUsers(context) {
       axios.get(`${API_ROUTE}/users`).then(res => {
         context.commit('getUsers', res.data)
@@ -77,6 +86,7 @@ export const store = new Vuex.Store({
         console.log("this is the error getting the user: ", err)
       })
     },
+    
     createFood(context, payload) {
       axios.get(`${API_ROUTE}/food`, {
         title: payload.title,
@@ -94,23 +104,27 @@ export const store = new Vuex.Store({
     //   })
     // },
 
-    login(context, payload) {
-      axios.post(`${API_ROUTE}/login`, {
-        email: payload.email,
-        password: payload.password
-      }).then(res => {
-        context.commit('loggedInUser', res.data)
-      }).catch(err => {
-        console.log("the error: ", err)
-      })
-    },
-    // getTickets(context, event_id) {
-    //   axios.get(`http://localhost:9999/event-tickets/${event_id}`).then(res => {
-    //     context.commit('getTickets', res.data)
-    //     console.log("this isthe ticket payload: ", res.data)
+    // login(context, payload) {
+    //   axios.post(`${API_ROUTE}/login`, {
+    //     email: payload.email,
+    //     password: payload.password
+    //   }).then(res => {
+    //     context.commit('loggedInUser', res.data)
     //   }).catch(err => {
-    //     console.log("this is the error getting the event: ", err)
+    //     console.log("the error: ", err)
     //   })
     // },
+
+    async login(context, payload) {
+        try {
+        const res = await axios.post(`${API_ROUTE}/login`, {
+          email: payload.email,
+          password: payload.password
+        })
+        context.commit('loggedInUser', res.data)
+      }catch(err) {
+        context.commit('userError', err.response.data)
+      }
+    },
   }
 })
