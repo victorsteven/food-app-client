@@ -3,51 +3,41 @@
     <div slot="body" class="center-align">
         <div id="login-page" class="row" >
             <div class="col s12 z-depth-6 card-header" style="margin-top: 20px;">
-                <h4>Register</h4>
+                <h4>Create Food Type</h4>
             </div>
             <div class="col s12 z-depth-6 card-panel" style="margin-bottom: 100px">
-            <form class="login-form" @submit.prevent="register">
-                <div class="row">
-                </div>
+            <form class="login-form" @submit.prevent="createFood" enctype="multipart/form-data">
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">contact_mail</i>
-                        <input id="first_name" type="text" v-model="first_name">
-                        <label for="first_name" data-error="wrong" data-success="right">First Name</label>
-                        <span style="color: red" v-if="signUpErr && signUpErr.firstname_required">{{ signUpErr.firstname_required }}</span>
+                        <input id="first_name" type="text" v-model="title">
+                        <label for="first_name" data-error="wrong" data-success="right">Title</label>
+                        <span style="color: red" v-if="createErr && createErr.title_required">{{ createErr.title_required }}</span>
                     </div>
-                    <div class="input-field col s12">
+                    <div class="input-field col s12 md6">
                         <i class="material-icons prefix">contact_mail</i>
-                        <input id="last_name" type="text" v-model="last_name">
-                        <label for="last_name" data-error="wrong" data-success="right">Last Name</label>
-                        <span style="color: red" v-if="signUpErr && signUpErr.lastname_required">{{ signUpErr.lastname_required }}</span>
+                        <textarea id="description" v-model="description" class="materialize-textarea"></textarea>
+                        <label for="description" data-success="right">Description</label>
+                        <span style="color: red" v-if="createErr && createErr.desc_required">{{ createErr.desc_required }}</span>
                     </div>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">mail_outline</i>
-                        <input id="email" class="validate" type="email" v-model="email">
-                        <label for="email" data-error="wrong" data-success="right">Email</label>
-                        <span style="color: red" v-if="signUpErr && signUpErr.email_required">{{ signUpErr.email_required }}</span>
-                        <span style="color: red" v-if="signUpErr && signUpErr.invalid_email">{{ signUpErr.invalid_email }}</span>
-                        <span style="color: red" v-if="signUpErr && signUpErr.email_taken">{{ signUpErr.email_taken }}</span>
+                    <div class="file-field input-field col s12">
+                        <div class="btn">
+                            <span>Choose Image to use</span>
+                            <input type="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input @change="onChangeFileUpload" accept="image/*" class="file-path validate" placeholder="Upload file" id="file" name="food_image" ref="file" type="file">
+                        </div>
+                        <div v-if="food_image_display.length > 200 && visibleFile">
+                        <img :src="getProfilePhoto()" alt="event image" style="width: 100%; height: 220px;">
                     </div>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">lock_outline</i>
-                        <input type="password" v-model="password">
-                        <label for="password">Password</label>
-                        <span style="color: red" v-if="signUpErr && signUpErr.password_required">{{ signUpErr.password_required }}</span>
                     </div>
                     <div class="input-field col s12">
                         <button :disabled="disabled" class="btn waves-effect waves-light col s12 btn-color">
-                            <span v-if="loading">Registering...</span>
-                           <span v-else>Register</span> 
+                            <span v-if="loading">Creating...</span>
+                           <span v-else>Create</span> 
                         </button>
                     </div>
-                    <div class="input-field style-foot col s6 m6 l6">
-                        <p class="margin left-margin medium-small"><a href="#">Login</a></p>
-                    </div>
-                    <div class="input-field style-foot col s6 m6 l6">
-                        <p class="margin right-align medium-small"><a href="#">Forgot password?</a></p>
-                    </div> 
                 </div>
             </form>
             </div>
@@ -57,40 +47,54 @@
 </template>
 
 
-
 <script>
 
 import Layout from '../Nav/Layout'
 export default {
     components: {Layout},
     data: () => ({
-        first_name: null,
-        last_name: null,
-        email: null,
-        password: null,
-        loading: false
+        title: null,
+        description: null,
+        loading: false,
+        food_image_display: '',
+
     }),
     computed: {
         disabled(){
             return this.loading === true
         },
-        signUpErr() {
-            return this.$store.state.userError
+        createErr() {
+            return this.$store.state.foodError
+        },
+         visibleFile() {
+            return this.$refs.file.files[0] !== ''
         }
     },
     methods: {
-        register() {
+        createFood() {
             this.loading = true
-            this.$store.dispatch('register', {
-                'first_name': this.first_name,
-                'last_name': this.last_name,
-                'email': this.email,
-                'password': this.password
-            }).then(() => {
+            let formData = new FormData();
+            formData.append('food_image', this.food_image);
+            formData.append('title', this.title);
+            formData.append('description', this.description);
+            this.$store.dispatch('createFood', formData).then(() => {
                 this.loading = false
-                console.log("success")
             })
-        }
+        },
+         getProfilePhoto() {
+            if (this.food_image_display.length > 200) {
+                return this.food_image_display;
+            }
+        },
+        onChangeFileUpload() {
+            this.food_image = this.$refs.file.files[0];
+            let file = this.$refs.file.files[0];
+            let reader = new FileReader();
+            reader.onloadend = () => {
+                this.food_image_display = reader.result;
+            };
+            reader.readAsDataURL(file);
+        },
     }
 }
 </script>

@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 // import { AxiosHelper } from '../utils/axios_utils'
+import customAxios from '../authorization'
+
 import API_ROUTE from '../.env'
 
 Vue.use(Vuex)
@@ -12,8 +14,9 @@ export const store = new Vuex.Store({
     single_food: {},
     users: [],
     user: {},
-    token: localStorage.getItem('token') || '',
-    userError: ''
+    userError: '',
+    foodError: '',
+    authenticated: localStorage.getItem('access_token') === null ? false : true
   },
 
   getters: {
@@ -29,27 +32,21 @@ export const store = new Vuex.Store({
     userError(state, err) {
       state.userError = err
     },
-    // login(state, loginDetails) {
-    //   state.
-    // }
+    foodError(state, err) {
+      state.foodError = err
+    },
+
     getUsers(state, users) {
       state.users = users
     },
-    // loggedInUser(state, user) {
-    //   state.user = user
-    // },
     getAllFood(state, all_food) {
       state.all_food = all_food
-      // console.log("the food in state: ", state.all_food)
-
     },
     getSingleFood(state, food) {
       state.food = food
     },
 
     loggedInUser(state, payload) {
-      // window.localStorage.setItem('user_info', JSON.stringify(payload))
-      // window.localStorage.setItem('token', JSON.stringify(payload.token))
       localStorage.setItem('access_token', payload.access_token)
       localStorage.setItem('refresh_token', payload.refresh_token)
       state.user = {
@@ -58,12 +55,12 @@ export const store = new Vuex.Store({
         "last_name": payload.last_name,
         "email": payload.email
       }
-
-      // window.localStorage.setItem(this.defaultConfig.cookie_name, payload.token)
-      // state.token = payload.token
-      // AxiosHelper.setHeader(payload.token)
       state.user = payload.user
+      state.authenticated = true
     },
+    createdFood(state, payload) {
+      state.single_food = payload
+    }
   },
   actions: {
     async register(context, payload) {
@@ -76,25 +73,29 @@ export const store = new Vuex.Store({
         })
       }catch(err) {
         context.commit('userError', err.response.data)
-        console.log("the signup values: ", err.response.data)
       }
     },
     async getAllFood(context) {
       try {
         const res = await axios.get(`${API_ROUTE}/food`)
           context.commit('getAllFood', res.data)
-          console.log("these are the users: ", res.data)
       } catch(err) {
         console.log("this is the error getting the user: ", err)
       }
     },
-    createFood(context, payload) {
-      axios.get(`${API_ROUTE}/food`, {
-        title: payload.title,
-        description: payload.description,
-      }).then(res => {
-        console.log("this is the new food: ", res.data)
-      })
+    async createFood(context, payload) {
+
+      console.log("this is the sent payload: ", payload)
+      try {
+      // const res = await customAxios.post(`${API_ROUTE}/food`, {
+      //   title: payload.title,
+      //   description: payload.description,
+      // })
+      const res = await customAxios.post(`${API_ROUTE}/food`, payload)
+      context.commit('createdFood', res.data)
+      }catch(err) {
+        context.commit('foodError', err.response.data)
+      }
     },
 
     // fetchSingleEvent(context, event_id) {

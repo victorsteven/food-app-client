@@ -1,5 +1,5 @@
 import axios from 'axios';
-import API_ROUTE from './env';
+import API_ROUTE from './.env';
 
 const customAxios = axios.create({})
 

@@ -17,6 +17,8 @@
                         <i class="material-icons prefix">lock_outline</i>
                         <input type="password" id="password" v-model="password">
                         <label for="password">Password</label>
+                        <span style="color: red" v-if="loginErr && loginErr.incorrect_password">{{ loginErr.incorrect_password }}</span>
+
                     </div>
                     <div class="input-field col s12">
                         <button :disabled="disabled" class="btn waves-effect waves-light col s12 btn-color">
@@ -66,7 +68,6 @@ export default {
                 'password': this.password
             }).then(() => {
                 this.loading = false
-                console.log("success")
             })
         }
     }
@@ -78,8 +79,8 @@ export default {
         width: 30%;
         margin: auto
     }
-    .input-field {
+    /* .input-field {
         margin-top: 5px!important;
         margin-bottom: 15px!important;
-    }
+    } */
 </style>
