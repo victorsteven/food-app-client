@@ -4,30 +4,34 @@
     <!-- <div class="col s12 m12 l9"> -->
       <div id="card-container" class="row">
         <div class="col s12 m6 l4" v-for="food in allFood" :key="food.id">
-          <div class="card">
-           <div class="card-image">
-                <img src="images/sample-1.jpg">
-                <span class="card-title">{{ food.title }}</span>
-              </div>
-            <div class="card-content white-text">
-              <div class="card__date">
-                <span class="card__date__day">23</span>
-                <span class="card__date__month">Mai</span>
-              </div>
-              <div class="card__meta">
-                <a href="#"><i class="small material-icons">room</i>Web Design</a>
-                <time>17th March</time>
-              </div>
-              <span class="card-title grey-text text-darken-4">{{ food.title }}</span>
+          <!-- <a :href=""> -->
+          <router-link :to="`/single_food/${food.id}`">
+            <div class="card">
+            <div class="card-image">
+              <img :src="food.avatar_path" class="image-style">
+              <span class="card-title">{{ food.title }}</span>
+            </div>
+              <div class="card-content white-text">
+                <div class="card__date">
+                  <span class="card__date__day">23</span>
+                  <span class="card__date__month">Mai</span>
+                </div>
+                <div class="card__meta">
+                  <a href="#"><i class="small material-icons">room</i>Web Design</a>
+                  <time>17th March</time>
+                </div>
+                <span class="card-title grey-text text-darken-4">{{ food.title }}</span>
 
-              <p class="card-subtitle grey-text text-darken-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sagittis pellentesque lacus eleifend lacinia...lacus eleifend lacinia... go!</p>
-              <span class="text-darken-2 card-info"><i class="small material-icons">label</i>&nbsp;lindy hop, balboa, charleston</span>
+                <p class="card-subtitle grey-text text-darken-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sagittis pellentesque lacus eleifend lacinia...lacus eleifend lacinia... go!</p>
+                <span class="text-darken-2 card-info"><i class="small material-icons">label</i>&nbsp;lindy hop, balboa, charleston</span>
+              </div>
+              <div class="card-action">
+                <a href="#"><i class="material-icons">&nbsp;language</i>VISIT WEB</a>
+                <a href="#" class="card-action-right"><i class="material-icons">&nbsp;room</i>FIND</a>
+              </div>
             </div>
-            <div class="card-action">
-              <a href="#"><i class="material-icons">&nbsp;language</i>VISIT WEB</a>
-              <a href="#" class="card-action-right"><i class="material-icons">&nbsp;room</i>FIND</a>
-            </div>
-          </div>
+          </router-link>
+          <!-- </a> -->
         </div>
       </div>
     <!-- </div> -->
@@ -113,6 +117,9 @@ export default {
    }
    .card .card-content .card-title {
        line-height: 34px;
+   }
+   .card-image > .image-style {
+     height:260px
    }
    .card__date {
        background: #08c;

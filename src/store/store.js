@@ -25,6 +25,9 @@ export const store = new Vuex.Store({
     },
     allFood(state) {
       return state.all_food;
+    },
+    singleFood(state){
+      return state.single_food
     }
   },
 
@@ -35,12 +38,14 @@ export const store = new Vuex.Store({
     foodError(state, err) {
       state.foodError = err
     },
-
     getUsers(state, users) {
       state.users = users
     },
     getAllFood(state, all_food) {
       state.all_food = all_food
+    },
+    getFood(state, food) {
+      state.single_food = food
     },
     getSingleFood(state, food) {
       state.food = food
@@ -75,10 +80,20 @@ export const store = new Vuex.Store({
         context.commit('userError', err.response.data)
       }
     },
+
+    
     async getAllFood(context) {
       try {
         const res = await axios.get(`${API_ROUTE}/food`)
           context.commit('getAllFood', res.data)
+      } catch(err) {
+        console.log("this is the error getting the user: ", err)
+      }
+    },
+    async singleFood(context, payload) {
+      try {
+        const res = await axios.get(`${API_ROUTE}/food/${payload.food_id}`)
+          context.commit('getFood', res.data)
       } catch(err) {
         console.log("this is the error getting the user: ", err)
       }

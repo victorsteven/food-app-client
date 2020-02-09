@@ -9,15 +9,15 @@
             <form class="login-form" @submit.prevent="createFood" enctype="multipart/form-data">
                 <div class="row">
                     <div class="input-field col s12">
-                        <i class="material-icons prefix">contact_mail</i>
                         <input id="first_name" type="text" v-model="title">
                         <label for="first_name" data-error="wrong" data-success="right">Title</label>
                         <span style="color: red" v-if="createErr && createErr.title_required">{{ createErr.title_required }}</span>
                     </div>
                     <div class="input-field col s12 md6">
-                        <i class="material-icons prefix">contact_mail</i>
-                        <textarea id="description" v-model="description" class="materialize-textarea"></textarea>
                         <label for="description" data-success="right">Description</label>
+                        <div style="margin-top: 40px">
+                        <vue-editor v-model="description"></vue-editor>
+                        </div>
                         <span style="color: red" v-if="createErr && createErr.desc_required">{{ createErr.desc_required }}</span>
                     </div>
                     <div class="file-field input-field col s12">
@@ -50,13 +50,20 @@
 <script>
 
 import Layout from '../Nav/Layout'
+// import tinymce from 'vue-tinymce-editor'
+import {VueEditor} from 'vue2-editor'
+
+
 export default {
-    components: {Layout},
+    components: {Layout, VueEditor },
     data: () => ({
         title: null,
         description: null,
         loading: false,
         food_image_display: '',
+        options2: {
+            branding: false
+        },
 
     }),
     computed: {
@@ -101,17 +108,11 @@ export default {
 
 <style scoped>
     #login-page {
-        width: 30%;
+        width: 50%;
         margin: auto
     }
     .input-field.style-foot {
         margin-top: 5px!important;
         margin-bottom: 5px!important;
     }
-    /* button:disabled {
-        background: red
-    } */
-    /* .btn-color {
-        background: lightgreen
-    } */
 </style>

@@ -4,6 +4,7 @@ import Register from './components/Auth/Register'
 import Login from './components/Auth/Login'
 // import Index from './components/Index'
 import AllFood from './components/Food/AllFood'
+import SingleFood from './components/Food/SingleFood'
 
 // import axios from 'axios'
 
@@ -25,6 +26,11 @@ const router = new VueRouter({
       path: '/',
       name: 'all_food',
       component: AllFood
+    },
+    {
+      path: '/single_food/:id',
+      name: 'single_food',
+      component: SingleFood
     },
     {
       path: '/login',

@@ -5,7 +5,7 @@
       <md-button class="md-icon-button" @click="showNavigation = true">
         <md-icon>menu</md-icon>
       </md-button>
-      <span class="md-title">My Title</span>
+      <span class="md-title"><a href="/">Food App</a></span>
       <div class="md-toolbar-section-end">
         <span v-if="authenticated">
            <router-link to="/food">
@@ -90,5 +90,18 @@
   bottom: 0;
   width: 100%;
   height: 2.5rem;            /* Footer height */
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+a:link {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
 }
 </style>
