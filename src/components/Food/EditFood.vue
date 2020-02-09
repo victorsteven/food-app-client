@@ -8,19 +8,14 @@
             <div class="row">
                 <div class="input-field col s12">
                     <input id="first_name" type="text" v-model="title">
-                    <span style="color: red" v-if="createErr && createErr.title_required">{{ createErr.title_required }}</span>
+                    <span style="color: red" v-if="updateErr && updateErr.title_required">{{ updateErr.title_required }}</span>
                 </div>
                 <div class="input-field col s12 md6">
                     <label for="description" data-success="right">Description</label>
                     <div style="margin-top: 40px">
-                    <!-- <tinymce :branding="false" 
-                            :other_options="options2" id="description" 
-                            v-model="description"
-                    >
-                    </tinymce> -->
                     <vue-editor v-model="description"></vue-editor>
                     </div>
-                    <span style="color: red" v-if="createErr && createErr.desc_required">{{ createErr.desc_required }}</span>
+                    <span style="color: red" v-if="updateErr && updateErr.desc_required">{{ updateErr.desc_required }}</span>
                 </div>
                 <div class="file-field input-field col s12">
                     <div class="btn">
@@ -33,11 +28,14 @@
                         </div>
                     </span>
                     <div class="file-path-wrapper">
-                        <input @change="onChangeFileUpload" accept="image/*" class="file-path validate" placeholder="Upload file" id="file" name="food_image" ref="file" type="file">
+                        <input @change="onChangeFileUpload"  class="file-path validate" placeholder="Upload file" id="file" name="food_image" ref="file" type="file">
                     </div>
                     <div v-if="food_image_display.length > 200 && visibleFile">
                         <img :src="getProfilePhoto()" alt="event image" style="width: 100%; height: 220px;">
                     </div>
+                </div>
+                <div class="file-field input-field col s12">
+                    <span style="color: red" v-if="updateErr && updateErr.upload_err">{{ updateErr.upload_err }}</span>
                 </div>
                 <div class="input-field col s12">
                     <button :disabled="disabled" class="btn waves-effect waves-light col s12 btn-color">
@@ -82,14 +80,14 @@ export default {
         disabled(){
             return this.loading === true
         },
-        createErr() {
-            return this.$store.state.foodError
+        updateErr() {
+            return this.$store.state.appError
         },
          visibleFile() {
             return this.$refs.file.files[0] !== ''
         },
         showImage() {
-            return this.food.avatar_path
+            return this.food.food_image
         },
     },
     methods: {
@@ -99,7 +97,10 @@ export default {
             formData.append('food_image', this.food_image);
             formData.append('title', this.title);
             formData.append('description', this.description);
-            this.$store.dispatch('createFood', formData).then(() => {
+            this.$store.dispatch('updateFood', {
+                'formData': formData,
+                'food_id': this.food.id
+            }).then(() => {
                 this.loading = false
             })
         },

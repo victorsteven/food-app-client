@@ -10,7 +10,7 @@
         </div>
         <div class="row" v-else>
           <div class="col s12 m6">
-             <img :src="food.avatar_path" style="height: 90%; width: 100%" class="image-style">
+             <img :src="food.food_image" style="height: 90%; width: 100%" class="image-style">
           </div>
           <div class="col s12 m6">
             <h3 v-text="food.title"></h3>

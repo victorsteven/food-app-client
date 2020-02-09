@@ -75,7 +75,7 @@ export default {
             return this.loading === true
         },
         signUpErr() {
-            return this.$store.state.userError
+            return this.$store.state.appError
         }
     },
     methods: {

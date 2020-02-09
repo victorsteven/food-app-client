@@ -71,7 +71,7 @@ export default {
             return this.loading === true
         },
         createErr() {
-            return this.$store.state.foodError
+            return this.$store.state.appError
         },
          visibleFile() {
             return this.$refs.file.files[0] !== ''

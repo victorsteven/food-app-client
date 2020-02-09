@@ -14,8 +14,7 @@ export const store = new Vuex.Store({
     single_food: {},
     users: [],
     user: {},
-    userError: '',
-    foodError: '',
+    appError: '',
     authenticated: localStorage.getItem('access_token') === null ? false : true
   },
 
@@ -32,23 +31,28 @@ export const store = new Vuex.Store({
   },
 
   mutations: {
-    userError(state, err) {
-      state.userError = err
-    },
-    foodError(state, err) {
-      state.foodError = err
+    appError(state, err) {
+      state.appError = err
     },
     getUsers(state, users) {
       state.users = users
+      state.appError = ''
     },
     getAllFood(state, all_food) {
       state.all_food = all_food
+      state.appError = ''
     },
     getFood(state, food) {
       state.single_food = food
+      state.appError = ''
     },
     getSingleFood(state, food) {
       state.food = food
+      state.appError = ''
+    },
+    updatedFood(state, food) {
+      state.food = food
+      state.appError = ''
     },
 
     loggedInUser(state, payload) {
@@ -62,9 +66,11 @@ export const store = new Vuex.Store({
       }
       state.user = payload.user
       state.authenticated = true
+      state.appError = ''
     },
     createdFood(state, payload) {
       state.single_food = payload
+      state.appError = ''
     }
   },
   actions: {
@@ -77,11 +83,10 @@ export const store = new Vuex.Store({
           password: payload.password
         })
       }catch(err) {
-        context.commit('userError', err.response.data)
+        context.commit('appError', err.response.data)
       }
     },
 
-    
     async getAllFood(context) {
       try {
         const res = await axios.get(`${API_ROUTE}/food`)
@@ -99,19 +104,25 @@ export const store = new Vuex.Store({
       }
     },
     async createFood(context, payload) {
-
-      console.log("this is the sent payload: ", payload)
       try {
-      // const res = await customAxios.post(`${API_ROUTE}/food`, {
-      //   title: payload.title,
-      //   description: payload.description,
-      // })
       const res = await customAxios.post(`${API_ROUTE}/food`, payload)
       context.commit('createdFood', res.data)
       }catch(err) {
-        context.commit('foodError', err.response.data)
+        context.commit('appError', err.response.data)
       }
     },
+
+    async updateFood(context, payload) {
+      console.log("the payload ", payload)
+      try {
+        const res = await customAxios.put(`${API_ROUTE}/food/${payload.food_id}`, payload.formData)
+        context.commit('updatedFood', res.data)
+      }catch(err) {
+        context.commit('appError', err.response.data)
+      }
+    },
+
+    
 
     // fetchSingleEvent(context, event_id) {
     //   axios.get(`http://localhost:9999/events/${event_id}`).then(res => {
@@ -140,7 +151,7 @@ export const store = new Vuex.Store({
         })
         context.commit('loggedInUser', res.data)
       }catch(err) {
-        context.commit('userError', err.response.data)
+        context.commit('appError', err.response.data)
       }
     },
   }

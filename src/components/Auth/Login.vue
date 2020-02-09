@@ -57,7 +57,7 @@ export default {
             return this.loading === true
         },
         loginErr() {
-            return this.$store.state.userError
+            return this.$store.state.appError
         }
     },
     methods: {

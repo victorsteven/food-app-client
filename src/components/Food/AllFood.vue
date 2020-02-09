@@ -8,7 +8,7 @@
           <router-link :to="`/single_food/${food.id}`">
             <div class="card">
             <div class="card-image">
-              <img :src="food.avatar_path" class="image-style">
+              <img :src="food.food_image" class="image-style">
               <span class="card-title">{{ food.title }}</span>
             </div>
               <div class="card-content white-text">
