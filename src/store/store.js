@@ -11,22 +11,20 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     all_food: [],
-    single_food: {},
+    food_and_creator: {},
     users: [],
-    user: {},
+    user: localStorage.getItem('user') === null ? null : JSON.parse(localStorage.getItem('user')),
     appError: '',
-    authenticated: localStorage.getItem('access_token') === null ? false : true
+    authenticated: localStorage.getItem('access_token') === null ? false : true,
+    delMsg: '',
   },
 
   getters: {
-    userDetails(state) {
-      return state.user
-    },
     allFood(state) {
       return state.all_food;
     },
-    singleFood(state){
-      return state.single_food
+    food_and_creator(state){
+      return state.food_and_creator
     }
   },
 
@@ -34,37 +32,32 @@ export const store = new Vuex.Store({
     appError(state, err) {
       state.appError = err
     },
-    getUsers(state, users) {
-      state.users = users
-      state.appError = ''
-    },
     getAllFood(state, all_food) {
       state.all_food = all_food
       state.appError = ''
     },
-    getFood(state, food) {
-      state.single_food = food
+    getFoodAndCreator(state, data) {
+      state.food_and_creator = data
       state.appError = ''
     },
-    getSingleFood(state, food) {
+    updatedFood(state, delMsg) {
+      state.delMsg = delMsg
+      state.appError = ''
+    },
+    deletedFood(state, food) {
       state.food = food
       state.appError = ''
     },
-    updatedFood(state, food) {
-      state.food = food
-      state.appError = ''
-    },
-
     loggedInUser(state, payload) {
       localStorage.setItem('access_token', payload.access_token)
       localStorage.setItem('refresh_token', payload.refresh_token)
-      state.user = {
+      let user = {
         "id": payload.id,
         "first_name": payload.first_name,
         "last_name": payload.last_name,
-        "email": payload.email
       }
-      state.user = payload.user
+      localStorage.setItem('user', JSON.stringify(user))
+
       state.authenticated = true
       state.appError = ''
     },
@@ -98,7 +91,7 @@ export const store = new Vuex.Store({
     async singleFood(context, payload) {
       try {
         const res = await axios.get(`${API_ROUTE}/food/${payload.food_id}`)
-          context.commit('getFood', res.data)
+          context.commit('getFoodAndCreator', res.data)
       } catch(err) {
         console.log("this is the error getting the user: ", err)
       }
@@ -111,9 +104,7 @@ export const store = new Vuex.Store({
         context.commit('appError', err.response.data)
       }
     },
-
     async updateFood(context, payload) {
-      console.log("the payload ", payload)
       try {
         const res = await customAxios.put(`${API_ROUTE}/food/${payload.food_id}`, payload.formData)
         context.commit('updatedFood', res.data)
@@ -121,27 +112,14 @@ export const store = new Vuex.Store({
         context.commit('appError', err.response.data)
       }
     },
-
-    
-
-    // fetchSingleEvent(context, event_id) {
-    //   axios.get(`http://localhost:9999/events/${event_id}`).then(res => {
-    //     context.commit('getSingleEvent', res.data)
-    //   }).catch(err => {
-    //     console.log("this is the error getting the event: ", err)
-    //   })
-    // },
-
-    // login(context, payload) {
-    //   axios.post(`${API_ROUTE}/login`, {
-    //     email: payload.email,
-    //     password: payload.password
-    //   }).then(res => {
-    //     context.commit('loggedInUser', res.data)
-    //   }).catch(err => {
-    //     console.log("the error: ", err)
-    //   })
-    // },
+    async deleteFood(context, payload) {
+      try {
+        const res = await customAxios.delete(`${API_ROUTE}/food/${payload.food_id}`)
+        context.commit('deletedFood', res.data)
+      }catch(err) {
+        context.commit('appError', err.response.data)
+      }
+    },
 
     async login(context, payload) {
         try {

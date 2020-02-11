@@ -1,7 +1,7 @@
 <template>
-    <div id="login-page" class="row" >
-        <div class="col s12 z-depth-6 card-header" style="margin-top: 20px;">
-            <h4>Edit Food Type</h4>
+    <div id="edit-page" class="row">
+        <div class="col s12 z-depth-6 center-align" style="margin-top: 20px;">
+            <h4 style="color: #039be5">Edit Food</h4>
         </div>
         <div class="col s12 z-depth-6 card-panel" style="margin-bottom: 100px">
         <form class="login-form" @submit.prevent="updateFood" enctype="multipart/form-data">
@@ -18,7 +18,7 @@
                     <span style="color: red" v-if="updateErr && updateErr.desc_required">{{ updateErr.desc_required }}</span>
                 </div>
                 <div class="file-field input-field col s12">
-                    <div class="btn">
+                    <div class="btn" style="background: #039be5">
                         <span>Choose Image to use</span>
                         <input type="file">
                     </div>
@@ -38,7 +38,7 @@
                     <span style="color: red" v-if="updateErr && updateErr.upload_err">{{ updateErr.upload_err }}</span>
                 </div>
                 <div class="input-field col s12">
-                    <button :disabled="disabled" class="btn waves-effect waves-light col s12 btn-color">
+                    <button :disabled="disabled" class="btn col s12 btn-color" style="background: #039be5">
                         <span v-if="loading">Updating...</span>
                         <span v-else>Update</span> 
                     </button>
@@ -126,7 +126,7 @@ export default {
 </script>
 
 <style scoped>
-    #login-page {
+    #edit-page {
         width: 50%;
         margin: auto
     }

@@ -5,11 +5,9 @@ import Login from './components/Auth/Login'
 // import Index from './components/Index'
 import AllFood from './components/Food/AllFood'
 import SingleFood from './components/Food/SingleFood'
-
-// import axios from 'axios'
+import EditFood from './components/Food/EditFood'
 
 import CreateFood from './components/Food/CreateFood'
-
 
 Vue.use(VueRouter)
 
@@ -31,6 +29,11 @@ const router = new VueRouter({
       path: '/single_food/:id',
       name: 'single_food',
       component: SingleFood
+    },
+    {
+      path: '/edit/single_food/:id',
+      name: 'edit_food',
+      component: EditFood
     },
     {
       path: '/login',

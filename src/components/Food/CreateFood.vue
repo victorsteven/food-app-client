@@ -1,9 +1,9 @@
 <template>
   <layout>
-    <div slot="body" class="center-align">
-        <div id="login-page" class="row" >
+    <div slot="body" class="center-align cont">
+        <div id="create-food-page" class="row" >
             <div class="col s12 z-depth-6 card-header" style="margin-top: 20px;">
-                <h4>Create Food Type</h4>
+                <h4 style="color: #039be5">Create Food </h4>
             </div>
             <div class="col s12 z-depth-6 card-panel" style="margin-bottom: 100px">
             <form class="login-form" @submit.prevent="createFood" enctype="multipart/form-data">
@@ -21,8 +21,8 @@
                         <span style="color: red" v-if="createErr && createErr.desc_required">{{ createErr.desc_required }}</span>
                     </div>
                     <div class="file-field input-field col s12">
-                        <div class="btn">
-                            <span>Choose Image to use</span>
+                        <div class="btn" style="background: #039be5">
+                            <span >Choose Image to use</span>
                             <input type="file">
                         </div>
                         <div class="file-path-wrapper">
@@ -33,7 +33,7 @@
                     </div>
                     </div>
                     <div class="input-field col s12">
-                        <button :disabled="disabled" class="btn waves-effect waves-light col s12 btn-color">
+                        <button :disabled="disabled" class="btn col s12 btn-color" style="background: #039be5">
                             <span v-if="loading">Creating...</span>
                            <span v-else>Create</span> 
                         </button>
@@ -50,7 +50,6 @@
 <script>
 
 import Layout from '../Nav/Layout'
-// import tinymce from 'vue-tinymce-editor'
 import {VueEditor} from 'vue2-editor'
 
 
@@ -85,6 +84,7 @@ export default {
             formData.append('title', this.title);
             formData.append('description', this.description);
             this.$store.dispatch('createFood', formData).then(() => {
+                this.$router.push("/")
                 this.loading = false
             })
         },
@@ -107,10 +107,19 @@ export default {
 </script>
 
 <style scoped>
-    #login-page {
-        width: 50%;
-        margin: auto
+
+    @media only screen and (min-width: 768px) {
+        #create-food-page {
+            width: 50%;
+            margin: auto
+        }
     }
+    .cont {
+        background-image: 
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.5)),
+            url("../../assets/meal.jpeg");
+    }
+
     .input-field.style-foot {
         margin-top: 5px!important;
         margin-bottom: 5px!important;
