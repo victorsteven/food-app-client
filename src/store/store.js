@@ -24,6 +24,9 @@ export const store = new Vuex.Store({
     food_and_creator(state){
       return state.food_and_creator
     },
+    user(state){
+      return state.user
+    }
   },
 
   mutations: {
