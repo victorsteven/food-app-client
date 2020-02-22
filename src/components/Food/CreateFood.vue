@@ -12,6 +12,7 @@
                         <input id="first_name" type="text" v-model="title">
                         <label for="first_name" data-error="wrong" data-success="right">Title</label>
                         <span style="color: red" v-if="createErr && createErr.title_required">{{ createErr.title_required }}</span>
+                        <span style="color: red" v-if="createErr && createErr.unique_title">{{ createErr.unique_title }}</span>
                     </div>
                     <div class="input-field col s12 md6">
                         <label for="description" data-success="right">Description</label>
