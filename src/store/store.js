@@ -81,7 +81,7 @@ export const store = new Vuex.Store({
           password: payload.password
         })
       }catch(err) {
-        context.commit('appError', err.response.data)
+        context.commit('appError', err.response ? err.response.data : null)
       }
     },
 
@@ -106,7 +106,7 @@ export const store = new Vuex.Store({
       const res = await customAxios.post(`${API_ROUTE}/food`, payload)
       context.commit('createdFood', res.data)
       }catch(err) {
-        context.commit('appError', err.response.data)
+        context.commit('appError', err.response ? err.response.data : null)
       }
     },
     async updateFood(context, payload) {
@@ -114,7 +114,7 @@ export const store = new Vuex.Store({
         const res = await customAxios.put(`${API_ROUTE}/food/${payload.food_id}`, payload.formData)
         context.commit('updatedFood', res.data)
       }catch(err) {
-        context.commit('appError', err.response.data)
+        context.commit('appError', err.response ? err.response.data : null)
       }
     },
     async deleteFood(context, payload) {
@@ -122,7 +122,7 @@ export const store = new Vuex.Store({
         const res = await customAxios.delete(`${API_ROUTE}/food/${payload.food_id}`)
         context.commit('deletedFood', res.data)
       }catch(err) {
-        context.commit('appError', err.response.data)
+        context.commit('appError', err.response ? err.response.data : null)
       }
     },
     async login(context, payload) {
@@ -133,7 +133,7 @@ export const store = new Vuex.Store({
         })
         context.commit('loggedInUser', res.data)
       }catch(err) {
-        context.commit('appError', err.response.data)
+        context.commit('appError', err.response ? err.response.data : null)
       }
     },
     async logout(context) {
@@ -141,7 +141,7 @@ export const store = new Vuex.Store({
         const res = await customAxios.post(`${API_ROUTE}/logout`)
         context.commit('logout', res.data)
       }catch(err) {
-        context.commit('appError', err.response.data)
+        context.commit('appError', err.response ? err.response.data : null)
       }
     },
   }
