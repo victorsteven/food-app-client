@@ -1,6 +1,9 @@
 <template>
   <layout>
     <div slot="body" class="cont" style="margin-bottom: 40px;">
+      <div class="preloader-background" v-if="loading">
+        <p class="blinking" style="font-size: 40px; color: #304ffe">Loading...</p>
+      </div>
       <div id="card-container" class="row">
         <div class="col s12 m4 style-render" v-for="food in allFood" :key="food.id">
           <router-link :to="`/single_food/${food.id}`">
@@ -32,7 +35,7 @@ import Layout from '../Nav/Layout'
 export default {
     components: {Layout},
     data: () => ({
-        
+        loading: false
     }),
 
     mounted() {
@@ -49,20 +52,11 @@ export default {
     },
     methods: {
        getAllFood() {
-        this.$store.dispatch('getAllFood')
+         this.loading = true
+          this.$store.dispatch('getAllFood').then(() => {
+          this.loading = false
+        })
        },
-        register() {
-            this.loading = true
-            this.$store.dispatch('register', {
-                'first_name': this.first_name,
-                'last_name': this.last_name,
-                'email': this.email,
-                'password': this.password
-            }).then(() => {
-                this.loading = false
-                console.log("success")
-            })
-        },
         titleShorten(str){
           let count = 30
           return str.slice(0, count) + (str.length > count ? "..." : "");
@@ -100,5 +94,28 @@ export default {
       background-image: 
           linear-gradient(to bottom, rgba(255, 255, 255, 0.5)),
           url("../../assets/meal.jpeg");
+  }
+  .preloader-background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .preloader-background.p {
+    padding-top:120px;
+    margin-left: -60px;
+    opacity: 0.8;
+  } 
+  .blinking {
+      animation: blinker 1.5s linear infinite;
+  }
+  @keyframes blinker {  
+    50% { opacity: 0; }
   }
 </style>

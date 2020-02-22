@@ -2,6 +2,9 @@
   <layout>
     <div slot="body" class="cont">
       <div class="page-container">
+        <div class="preloader-background" v-if="loading">
+          <p class="blinking" style="font-size: 40px; color: #304ffe">Loading...</p>
+        </div>
        <span v-if="food && creator">
         <div v-if="editing">
            <edit-food :food="food"></edit-food>
@@ -111,5 +114,28 @@ export default {
     background-image: 
       linear-gradient(to bottom, rgba(255, 255, 255, 0.5)),
       url("../../assets/meal.jpeg");
+  }
+  .preloader-background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .preloader-background.p {
+    padding-top:120px;
+    margin-left: -60px;
+    opacity: 0.8;
+  } 
+  .blinking {
+      animation: blinker 1.5s linear infinite;
+  }
+  @keyframes blinker {  
+    50% { opacity: 0; }
   }
 </style>
