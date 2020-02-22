@@ -1,24 +1,5 @@
-# food-app-client
+An article was written about this project [here](https://dev.to/stevensunflash/using-domain-driven-design-ddd-in-golang-3ee5)
 
-## Project setup
-```
-npm install
-```
+A Backened was also built with Golang and deployed to heroku.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Get backend github repository [here](https://github.com/victorsteven/food-app-server)
