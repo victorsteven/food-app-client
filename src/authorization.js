@@ -12,7 +12,6 @@ customAxios.interceptors.request.use(
     return config
   },
   (error) => {
-    console.log("the error in the request: ", error)
     return Promise.reject(error)
   }
 )
@@ -24,7 +23,7 @@ customAxios.interceptors.response.use(
     return response
   },
   (error) => {
-    if(error.response.status == 401 && (error.response.data == "Token is expired" || error.response.data == "token contains an invalid number of segments")) {
+    if(error.response.data.status == 401 && (error.response.data.error == "Token is expired" || error.response.data.error == "token contains an invalid number of segments")) {
       return refreshToken(error)
     }
     return Promise.reject(error)
@@ -35,7 +34,7 @@ async function refreshToken(error) {
   try {
     const originalRequest = error.config;
     
-    const res = await axios.post(`${API_ROUTE}/token/refresh`, {
+    const res = await axios.post(`${API_ROUTE}/refresh`, {
       "refresh_token": localStorage.getItem('refresh_token')
     })
     localStorage.clear()
@@ -54,7 +53,8 @@ async function refreshToken(error) {
   } catch(err) {
     //The refresh token has expired, clear the cache and redirect to login
     if (err.response.data == "Refresh token has expired") {
-      localStorage.clear()
+      localStorage.removeItem("access_token")
+      localStorage.removeItem("refresh_token")
       window.location.href = "/login"
     }
     return Promise.reject(err);

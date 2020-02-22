@@ -88,7 +88,7 @@ export default {
                 'password': this.password
             }).then(() => {
                 this.loading = false
-                console.log("success")
+                this.$router.push("/login")
             })
         }
     }

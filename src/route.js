@@ -2,11 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Register from './components/Auth/Register'
 import Login from './components/Auth/Login'
-// import Index from './components/Index'
 import AllFood from './components/Food/AllFood'
 import SingleFood from './components/Food/SingleFood'
 import EditFood from './components/Food/EditFood'
-
 import CreateFood from './components/Food/CreateFood'
 
 Vue.use(VueRouter)
@@ -15,11 +13,6 @@ const router = new VueRouter({
   
   mode: 'history',
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'index',
-    //   component: Index
-    // },
     {
       path: '/',
       name: 'all_food',
@@ -33,7 +26,8 @@ const router = new VueRouter({
     {
       path: '/edit/single_food/:id',
       name: 'edit_food',
-      component: EditFood
+      component: EditFood,
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',
@@ -55,16 +49,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // if (to.path.startsWith("/logout")) {
-  //   // window.localStorage.clear();
-  //   // window.location = "/login"
-  //   let token = window.localStorage.getItem("token")
-  //   if (token) {
-  //     axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;
-  //   } else {
-  //     delete axios.defaults.headers.common['Authorization'];
-  //   }
-  // }
   if(to.path.startsWith("/login") || to.path.startsWith("/register")) {
     if (window.localStorage.getItem("access_token")) {
       next({
@@ -72,29 +56,20 @@ router.beforeEach((to, from, next) => {
       })
     }
   }
-  // if(to.meta.requiresAuth || to.path.startsWith("/logout")) {
-  //   console.log("we came here")
-  //   let token = window.localStorage.getItem("access_token")
-  //   if (token) {
-  //     console.log("we have token")
-  //     axios.defaults.headers.common['Authorization'] =`Bearer ${token}`;
-  //   } else {
-  //     delete axios.defaults.headers.common['Authorization'];
-  //   }
-  //   if(!window.localStorage.getItem("access_token")) {
-  //     next({
-  //       path: "/login",
-  //       query: {
-  //         redirect: to.auth
-  //       }
-  //     });
-  //   } else {
-  //     next()
-  //   }
-  // } else {
-  //   next()
-  // }
-  next()
+  if (to.meta.requiresAuth) {
+    if (!window.localStorage.getItem("access_token")) {
+        next({
+            path: "/login",
+            query: {
+                redirect: to.path
+            }
+        });
+    } else {
+        next();
+    }
+  } else {
+    next();
+  } 
 })
 
 export default router;

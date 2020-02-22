@@ -8,7 +8,7 @@
         </div>
         <div class="row" v-else>
           <div class="row front-style">
-            <div>
+            <div style="background: white; border: 1px solid #f2f2f2; border-radius: 20%; padding: 5px;">
               created by <b> {{ formatNames(creator.first_name, creator.last_name) }} </b>
             </div>
             <div v-if="food.user_id == authID">
@@ -26,7 +26,7 @@
           <div class="col s12 m6">
              <img :src="food.food_image" style="height: 90%; width: 100%" class="image-style">
           </div>
-          <div class="col s12 m6">
+          <div class="col s12 m6" style="background: white;">
             <h3 v-text="food.title"></h3>
             <p v-html="food.description"></p>
           </div>
@@ -41,6 +41,8 @@
 
 import Layout from '../Nav/Layout'
 import EditFood from './EditFood'
+import swal from 'sweetalert2';
+
 
 export default {
     components: { Layout, EditFood },
@@ -63,7 +65,7 @@ export default {
             return this.$store.getters.food_and_creator.creator
         },
         authID() {
-          return this.$store.state.user.id
+          return this.$store.state.user ? this.$store.state.user.id : null
         }
     },
     methods: {
@@ -79,6 +81,11 @@ export default {
         destroy(id) {
           this.loading = true
           this.$store.dispatch('deleteFood', { "food_id": id }).then(() => {
+              swal({
+                  title: "success",
+                  text: "Food deleted",
+                  type: "success",
+              });
             this.$router.push("/")
             this.loading = false
           })

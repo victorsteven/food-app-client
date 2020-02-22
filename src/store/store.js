@@ -12,7 +12,6 @@ export const store = new Vuex.Store({
   state: {
     all_food: [],
     food_and_creator: {},
-    users: [],
     user: localStorage.getItem('user') === null ? null : JSON.parse(localStorage.getItem('user')),
     appError: '',
     authenticated: localStorage.getItem('access_token') === null ? false : true,
@@ -63,6 +62,12 @@ export const store = new Vuex.Store({
     },
     createdFood(state, payload) {
       state.single_food = payload
+      state.appError = ''
+    },
+    logout(state){
+      localStorage.clear()
+      state.user = null
+      state.authenticated = false
       state.appError = ''
     }
   },
@@ -120,7 +125,6 @@ export const store = new Vuex.Store({
         context.commit('appError', err.response.data)
       }
     },
-
     async login(context, payload) {
         try {
         const res = await axios.post(`${API_ROUTE}/login`, {
@@ -128,6 +132,14 @@ export const store = new Vuex.Store({
           password: payload.password
         })
         context.commit('loggedInUser', res.data)
+      }catch(err) {
+        context.commit('appError', err.response.data)
+      }
+    },
+    async logout(context) {
+        try {
+        const res = await customAxios.post(`${API_ROUTE}/logout`)
+        context.commit('logout', res.data)
       }catch(err) {
         context.commit('appError', err.response.data)
       }

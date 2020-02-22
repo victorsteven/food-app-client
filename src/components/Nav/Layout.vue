@@ -11,6 +11,7 @@
            <router-link to="/food">
             <md-button @click="showSidepanel = true">Create Food</md-button>
           </router-link>
+          <md-button @click="logout">Logout</md-button>
         </span>
         <span v-else>
           <router-link to="/login">
@@ -19,26 +20,25 @@
           <router-link to="/register">
             <md-button @click="showSidepanel = true">Register</md-button>
           </router-link>
-          <!-- <router-link to="/register">
-            <md-button @click="showSidepanel = true">Register</md-button>
-          </router-link> -->
         </span>
       </div>
     </md-toolbar>
    
     <md-drawer :md-active.sync="showNavigation" md-swipeable style="background: white">
       <md-toolbar class="md-transparent" md-elevation="0">
-        <span class="md-title">My App name</span>
+        <span class="md-title">
+          <a href="/">Food App</a>
+        </span>
       </md-toolbar>
         <md-list>
         <span v-if="authenticated">
           <md-list-item>
-            <md-icon>move_to_inbox</md-icon>
+           <router-link to="/food">
             <span class="md-list-item-text">Create Food</span>
+            </router-link>
           </md-list-item>
           <md-list-item>
-            <md-icon>error</md-icon>
-            <span class="md-list-item-text">Logout</span>
+            <span class="md-list-item-text logout-style" @click="logout">Logout</span>
           </md-list-item>
         </span>
         <span v-else>
@@ -55,7 +55,7 @@
     </md-drawer>
     <md-content>
        <div>
-            <slot name="body"></slot>
+          <slot name="body"></slot>
         </div>
     </md-content>
   </div>
@@ -67,7 +67,6 @@
 
 <script>
     import Footer from "./Footer";
-    // import Header from "./Header";
 
     export default {
         name: "Layout",
@@ -79,6 +78,13 @@
         computed: {
           authenticated(){
             return this.$store.state.authenticated
+          }
+        },
+        methods: {
+          logout(){
+            this.$store.dispatch('logout').then(() => {
+                this.$router.push("/")
+            })
           }
         }
     }
@@ -98,5 +104,9 @@ a:link {
 
 a:active {
   text-decoration: none;
+}
+.logout-style {
+  cursor: pointer;
+  color: #039be5;
 }
 </style>

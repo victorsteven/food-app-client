@@ -24,14 +24,14 @@
                     </div>
                      <span>
                         <div :class="{ 'hideIt' : hideImage }">
-                            <img  :src="showImage" alt="event image" style="width: 100%; height: 220px;">
+                            <img  :src="showImage" alt="food image" style="width: 100%; height: 220px;">
                         </div>
                     </span>
                     <div class="file-path-wrapper">
                         <input @change="onChangeFileUpload"  class="file-path validate" placeholder="Upload file" id="file" name="food_image" ref="file" type="file">
                     </div>
                     <div v-if="food_image_display.length > 200 && visibleFile">
-                        <img :src="getProfilePhoto()" alt="event image" style="width: 100%; height: 220px;">
+                        <img :src="getProfilePhoto()" alt="food image" style="width: 100%; height: 220px;">
                     </div>
                 </div>
                 <div class="file-field input-field col s12">
@@ -49,12 +49,10 @@
     </div> 
 </template>
 
-
 <script>
 
-// import tinymce from 'vue-tinymce-editor'
 import {VueEditor} from 'vue2-editor'
-
+import swal from 'sweetalert2';
 
 export default {
     props: ['food'],
@@ -102,6 +100,12 @@ export default {
                 'food_id': this.food.id
             }).then(() => {
                 this.loading = false
+                 swal({
+                    title: "success",
+                    text: "Food Updated",
+                    type: "success",
+                    confirmButtonText: "ok" 
+                });
             })
         },
          getProfilePhoto() {

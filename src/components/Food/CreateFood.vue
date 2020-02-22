@@ -29,8 +29,9 @@
                             <input @change="onChangeFileUpload" accept="image/*" class="file-path validate" placeholder="Upload file" id="file" name="food_image" ref="file" type="file">
                         </div>
                         <div v-if="food_image_display.length > 200 && visibleFile">
-                        <img :src="getProfilePhoto()" alt="event image" style="width: 100%; height: 220px;">
-                    </div>
+                            <img :src="getProfilePhoto()" alt="food image" style="width: 100%; height: 220px;">
+                        </div>
+                        <span style="color: red" v-if="createErr && createErr.invalid_file">{{ createErr.invalid_file }}</span>
                     </div>
                     <div class="input-field col s12">
                         <button :disabled="disabled" class="btn col s12 btn-color" style="background: #039be5">
@@ -84,8 +85,10 @@ export default {
             formData.append('title', this.title);
             formData.append('description', this.description);
             this.$store.dispatch('createFood', formData).then(() => {
-                this.$router.push("/")
                 this.loading = false
+                if(!this.createErr){
+                this.$router.push("/")
+                }
             })
         },
          getProfilePhoto() {

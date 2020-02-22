@@ -68,6 +68,7 @@ export default {
                 'password': this.password
             }).then(() => {
                 this.loading = false
+                this.$router.push("/")
             })
         }
     }
