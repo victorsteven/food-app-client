@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-// import { AxiosHelper } from '../utils/axios_utils'
 import customAxios from '../authorization'
 
 import API_ROUTE from '../.env'
@@ -24,7 +23,7 @@ export const store = new Vuex.Store({
     },
     food_and_creator(state){
       return state.food_and_creator
-    }
+    },
   },
 
   mutations: {
@@ -56,7 +55,7 @@ export const store = new Vuex.Store({
         "last_name": payload.last_name,
       }
       localStorage.setItem('user', JSON.stringify(user))
-
+      state.user = user
       state.authenticated = true
       state.appError = ''
     },

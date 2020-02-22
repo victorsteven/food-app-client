@@ -1,9 +1,9 @@
 <template>
   <layout>
     <div slot="body" class="center-align">
-        <div id="login-page" class="row" >
+        <div id="register-page" class="row" >
             <div class="col s12 z-depth-6 card-header" style="margin-top: 20px;">
-                <h4>Register</h4>
+                <h4 style="color: #039be5">Register</h4>
             </div>
             <div class="col s12 z-depth-6 card-panel" style="margin-bottom: 100px">
             <form class="login-form" @submit.prevent="register">
@@ -43,11 +43,12 @@
                         </button>
                     </div>
                     <div class="input-field style-foot col s6 m6 l6">
-                        <p class="margin left-margin medium-small"><a href="#">Login</a></p>
+                        <p class="margin left-margin medium-small">
+                            <router-link to="/login">
+                                <span>Login</span>
+                            </router-link>
+                        </p>
                     </div>
-                    <div class="input-field style-foot col s6 m6 l6">
-                        <p class="margin right-align medium-small"><a href="#">Forgot password?</a></p>
-                    </div> 
                 </div>
             </form>
             </div>
@@ -96,18 +97,22 @@ export default {
 </script>
 
 <style scoped>
-    #login-page {
+    @media only screen and (min-width: 768px) {
+    #register-page {
         width: 30%;
-        margin: auto
+        margin: auto;
+        padding-bottom: 120px;
+        }
+     }
+    @media only screen and (max-width: 768px) {
+     #register-page {
+        width: 90%;
+        margin: auto;
+        }
     }
     .input-field.style-foot {
         margin-top: 5px!important;
         margin-bottom: 5px!important;
     }
-    /* button:disabled {
-        background: red
-    } */
-    /* .btn-color {
-        background: lightgreen
-    } */
+   
 </style>

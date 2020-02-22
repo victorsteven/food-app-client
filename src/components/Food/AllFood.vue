@@ -1,10 +1,10 @@
 <template>
   <layout>
-    <div slot="body" class="cont" style="margin-bottom: 40px;">
+    <div slot="body" class="cont">
       <div class="preloader-background" v-if="loading">
         <p class="blinking" style="font-size: 40px; color: #304ffe">Loading...</p>
       </div>
-      <div id="card-container" class="row">
+      <div class="row">
         <div class="col s12 m4 style-render" v-for="food in allFood" :key="food.id">
           <router-link :to="`/single_food/${food.id}`">
             <div class="card">
@@ -84,17 +84,15 @@ export default {
      color: #1E1E1E;
      font-size: 13px;
    }
-   #container {
-     padding: 20px 10px;
-   }
    .style-render {
       padding: 20px 10px 0px 10px;
    }
   .cont {
-      background-image: 
-          linear-gradient(to bottom, rgba(255, 255, 255, 0.5)),
-          url("../../assets/meal.jpeg");
+      padding-bottom: 50px;
   }
+  .style-render[data-v-364c61fe] {
+    padding: 5px 10px 0px 10px;
+}
   .preloader-background {
     display: flex;
     align-items: center;

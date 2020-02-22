@@ -111,19 +111,22 @@ export default {
 </script>
 
 <style scoped>
-
     @media only screen and (min-width: 768px) {
-        #create-food-page {
-            width: 50%;
-            margin: auto
+    #create-food-page {
+        width: 50%;
+        margin: auto;
+        padding-bottom: 120px;
+        }
+     }
+    @media only screen and (max-width: 768px) {
+     #register-page {
+        width: 90%;
+        margin: auto;
         }
     }
     .cont {
-        background-image: 
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.5)),
-            url("../../assets/meal.jpeg");
+      padding-bottom: 30px;
     }
-
     .input-field.style-foot {
         margin-top: 5px!important;
         margin-bottom: 5px!important;

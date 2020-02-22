@@ -3,7 +3,7 @@
     <div slot="body" class="center-align">
         <div id="login-page" class="row">
             <div class="col s12 z-depth-6 card-header" style="margin-top: 40px;">
-                <h4>Login</h4>
+                <h4 style="color: #039be5">Login</h4>
             </div>
             <div class="col s12 z-depth-6 card-panel">
             <form class="login-form" @submit.prevent="login">
@@ -12,13 +12,14 @@
                         <i class="material-icons prefix">mail_outline</i>
                         <input class="validate" id="email" type="email" v-model="email">
                         <label for="email" data-error="wrong" data-success="right">Email</label>
+                        <span style="color: red" v-if="loginErr && loginErr.email_required">{{ loginErr.email_required }}</span>
+                        <span style="color: red" v-if="loginErr && loginErr.invalid_email">{{ loginErr.invalid_email }}</span>
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons prefix">lock_outline</i>
                         <input type="password" id="password" v-model="password">
                         <label for="password">Password</label>
                         <span style="color: red" v-if="loginErr && loginErr.incorrect_password">{{ loginErr.incorrect_password }}</span>
-
                     </div>
                     <div class="input-field col s12">
                         <button :disabled="disabled" class="btn waves-effect waves-light col s12 btn-color">
@@ -27,11 +28,12 @@
                         </button>
                     </div>
                     <div class="input-field col s6 m6 l6">
-                         <p class="margin left-margin medium-small"><a href="#">Register Now!</a></p>
+                         <p class="margin left-margin medium-small">
+                             <router-link to="/register">
+                                <span>Register Now!</span>
+                            </router-link>
+                        </p>
                     </div> 
-                    <div class="input-field col s6 m6 l6">
-                        <p class="margin right-align medium-small"><a href="#">Forgot password?</a></p>
-                    </div>                  
                 </div>
             </form>
             </div>
@@ -68,7 +70,9 @@ export default {
                 'password': this.password
             }).then(() => {
                 this.loading = false
-                this.$router.push("/")
+                if(!this.loginErr){
+                    this.$router.push("/")
+                }
             })
         }
     }
@@ -76,12 +80,18 @@ export default {
 </script>
 
 <style scoped>
-    #login-page {
-        width: 30%;
-        margin: auto
+     @media only screen and (min-width: 768px) {
+        #login-page {
+            width: 30%;
+            margin: auto;
+            padding-bottom: 200px;
+        }
+     }
+    @media only screen and (max-width: 768px) {
+     #login-page {
+        width: 90%;
+        margin: auto;
+        padding-bottom: 100px;
+        }
     }
-    /* .input-field {
-        margin-top: 5px!important;
-        margin-bottom: 15px!important;
-    } */
 </style>

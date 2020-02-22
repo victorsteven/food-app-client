@@ -130,9 +130,18 @@ export default {
 </script>
 
 <style scoped>
+    
+    @media only screen and (min-width: 768px) {
     #edit-page {
         width: 50%;
-        margin: auto
+        margin: auto;
+        }
+     }
+    @media only screen and (max-width: 768px) {
+     #edit-page {
+        width: 100%;
+        margin: auto;
+        }
     }
     .input-field.style-foot {
         margin-top: 5px!important;
