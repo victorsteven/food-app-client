@@ -26,6 +26,9 @@
                             <span v-if="loading">Logging in...</span>
                             <span v-else>Login</span> 
                         </button>
+                        <div>
+                            <span style="color: red" v-if="loginErr && loginErr.no_user">{{ loginErr.no_user }}</span>
+                        </div>
                     </div>
                     <div class="input-field col s6 m6 l6">
                          <p class="margin left-margin medium-small">
