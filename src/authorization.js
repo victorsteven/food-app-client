@@ -12,6 +12,7 @@ customAxios.interceptors.request.use(
     return config
   },
   (error) => {
+    console.log("this is the error store: ", error.response.data)
     return Promise.reject(error)
   }
 )
@@ -23,7 +24,7 @@ customAxios.interceptors.response.use(
     return response
   },
   (error) => {
-    if(error.response.data.status == 401 && (error.response.data.error == "Token is expired" || error.response.data.error == "token contains an invalid number of segments")) {
+    if(error.response.data == "Token is expired" || error.response.data == "token contains an invalid number of segments") {
       return refreshToken(error)
     }
     return Promise.reject(error)
@@ -31,6 +32,7 @@ customAxios.interceptors.response.use(
 )
 
 async function refreshToken(error) {
+  console.log("We entered here")
   try {
     const originalRequest = error.config;
     
