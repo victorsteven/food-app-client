@@ -14,8 +14,8 @@
             <div style="background: white; border: 1px solid #f2f2f2; border-radius: 20%; padding: 5px;">
               created by <b> {{ formatNames(creator.first_name, creator.last_name) }} </b>
             </div>
-            <!-- <span v-if="auth && auth.id"> -->
-              <!-- <div v-if="food.user_id == auth.id"> -->
+            <span v-if="auth && auth.id">
+              <div v-if="food.user_id == auth.id">
                 <span>
                   <a class="waves-effect waves-light btn style-edit" @click="edit">Edit</a>
                 </span>
@@ -25,8 +25,8 @@
                     <span v-else>Delete</span> 
                     </a>
                 </span>
-              <!-- </div> -->
-            <!-- </span> -->
+              </div>
+            </span>
           </div>
           <div class="col s12 m6">
              <img :src="food.food_image" style="height: 90%; width: 100%">
