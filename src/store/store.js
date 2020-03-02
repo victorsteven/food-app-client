@@ -143,7 +143,6 @@ export const store = new Vuex.Store({
         const res = await customAxios.post(`${API_ROUTE}/logout`)
         context.commit('logout', res.data)
       }catch(err) {
-        localStorage.clear()
         context.commit('appError', err.response ? err.response.data : null)
       }
     },
