@@ -99,6 +99,7 @@ export default {
         },
         onChangeFileUpload() {
             this.food_image = this.$refs.file.files[0];
+            console.log("the file uploaded: ", this.$refs.file.files[0])
             let file = this.$refs.file.files[0];
             let reader = new FileReader();
             reader.onloadend = () => {
